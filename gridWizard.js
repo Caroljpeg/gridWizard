@@ -195,54 +195,68 @@ function gridWizardPalette() {
 
 // Metodi
 function everythingEverywhereAllAtPageRatio(areasRatio, columns) {
+    // Calculate the total width of vertical margins and the total height of horizontal margins
+    // by picking a custom percentage of the page width and height (default: same ratio of the page short to long side)
     var marginWidth = pageWidth * areasRatio;
     var marginHeight = pageHeight * areasRatio;
-
+    
     marginTop = marginHeight / 2;
     marginBottom = marginHeight / 2;
     marginLeft = marginWidth / 2;
     marginRight = marginWidth / 2;
 
 
-    var gutterWidth = (pageWidth * areasRatio) / (2 * columns);
-    var gutterHeight = (pageHeight * areasRatio) / (2 * columns);
-
-    // calcola la larghezza delle colonne dividendo la larghezza del rettangolo definito dai margini - la larghezza totale del gutter
+    // Calculate a draft for the columns width
     var columnsWidth = (pageWidth - marginWidth) / columns;
-    var rowsHeight = (columnsWidth * (pageHeight - marginHeight)) / (pageWidth - marginWidth);
+    // Calculate the gutters width as a portion of the draft columns width
+    // with the same ratio with the column width as the total margins width and height to the page width and height
+    var guttersWidth = (pageWidth * areasRatio) / (2 * columns);
+    // Adjust the columns width to suit the gutters width
+    columnsWidth = (pageWidth - marginWidth - guttersWidth * (columns - 1)) / columns;
 
-    for (var i = marginLeft + columnsWidth; i < pageWidth - marginRight - 1; i += columnsWidth) {
-        with (master_spread_left) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (i - gutterWidth / 2) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (i + gutterWidth / 2) });
-        }
-        with (master_spread_right) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (pageWidth + i - gutterWidth / 2) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (pageWidth + i + gutterWidth / 2) });
-        }
+    // Calculate a the rows height so that the module of the grid has the same proportions of the page and the rectangle defined by the margins
+    // columnsWidth : (pageWidth - marginsWidth) = x : (pageHeight - marginsHeight) -> x = columnsWidth * (pageHeight - marginsHeight) / (pageWidth - marginsWidth)
+    var rowsHeight = columnsWidth * (pageHeight - marginHeight) / (pageWidth - marginWidth);
+    // Calculate the gutters height as a portion of the draft columns height
+    // with the same ratio with the column height as the total margins width and height to the page width and height
+    var guttersHeight = (pageHeight * areasRatio) / (2 * columns)
+
+
+    // Set a loop to draw the vertical guides
+    for (var i = 0; i < columns; i++) {
+        var xPosition = marginLeft + i * (columnsWidth + guttersWidth);
+
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: xPosition });
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: xPosition + columnsWidth });
+
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: pageWidth + xPosition });
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: pageWidth + xPosition + columnsWidth });
     }
-    for (var j = marginTop + rowsHeight; j < pageHeight - marginBottom - 1; j += rowsHeight) {
-        with (master_spread_left) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (j - gutterHeight / 2) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (j + gutterHeight / 2) });
-        }
-        with (master_spread_right) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (j - gutterHeight / 2) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (j + gutterHeight / 2) });
-        }
+    // Set a loop to draw the horizontal guides
+    for (var j = 0; j < columns; j++) {
+        var yPosition = marginTop + j * (rowsHeight + guttersHeight);
+
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition });
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition + rowsHeight });
+
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition });
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition + rowsHeight });
     }
-
-
-
-
-
+    
+    
+    // Apply the margin values
     master_spread_left.marginPreferences.properties = {
         right: marginRight,
         top: marginTop,
         left: marginLeft,
         bottom: marginBottom,
     };
-    master_spread_right.marginPreferences.properties = master_spread_left.marginPreferences.properties;
+    master_spread_right.marginPreferences.properties = {
+        right: marginRight,
+        top: marginTop,
+        left: marginLeft,
+        bottom: marginBottom,
+    };
 
     doc.pages.item(0).appliedMaster = doc.masterSpreads.item(0);
 }
