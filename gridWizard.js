@@ -1,6 +1,6 @@
 #targetengine 'gridWizard';
 
-// Variabili globali
+// global variables
 var doc = app.activeDocument;
  
 var masterIndex = 0;
@@ -29,7 +29,7 @@ gridWizardPalette();
 
 
 
-// Interfaccia
+// interface
 function gridWizardPalette() {
     var myPalette = new Window ('palette {text: "Grid Wizard", orientation: "column", alignChildren: ["fill","fill"]}');
     myPalette.main = myPalette.add ('group {preferredSize: [600, 500], alignChildren: ["left","fill"]}');
@@ -39,12 +39,12 @@ function gridWizardPalette() {
 
     myPalette.tabs = [];
 
-    //1 - Everything Everything Everywhere All At Page Ratio
+    //1 - everything everywhere all at page ratio
     myPalette.tabs[0]= myPalette.tabGroup.add('group');
     myPalette.tabs[0].add('statictext{text: "Everything Everywhere All At Page Ratio"}')
     myPalette.tabs[0].add('panel');
 
-        // Full - Empty Area Ratio
+        // full - empty area ratio
         var EEAAPRAreasRatioGroup = myPalette.tabs[0].add('group');
         EEAAPRAreasRatioGroup.orientation = 'row';
         var EEAAPRAreasRatioDefaultValue = areasRatio.toFixed(2);
@@ -60,7 +60,7 @@ function gridWizardPalette() {
                         }
                     };
                     
-        // Columns number
+        // columns number
         var EEAAPRColumnsGroup = myPalette.tabs[0].add('group');
         EEAAPRColumnsGroup.orientation = 'row';
             EEAAPRColumnsGroup.add('statictext{text: "Number of columns:"}');
@@ -71,27 +71,42 @@ function gridWizardPalette() {
 
 
 
-    // 2 - Gutenbergify
+    // 2 - gutenbergify
     myPalette.tabs[1]= myPalette.tabGroup.add('group');
     myPalette.tabs[1].add('statictext{text: "Gutenbergify"}')
     myPalette.tabs[1].add('panel');
 
-        // Flipping preferences
+        // flipping preferences
         var GFlippingPreferencesGroup = myPalette.tabs[1].add('group');
         GFlippingPreferencesGroup.orientation = 'row';
             var GFlipHorizontallyCheckBox = GFlippingPreferencesGroup.add('checkbox', undefined, 'flip horizontally');
             var GFlipVerticallyCheckBox = GFlippingPreferencesGroup.add('checkbox', undefined, 'flip vertically');
 
+        // subdivisions number
+        var GSubdivisionsNumberGroup = myPalette.tabs[1].add('group');
+        GSubdivisionsNumberGroup.orientation = 'row';
+        var GSubdivisionsNumberDefaultValue = 6;
+            GSubdivisionsNumberGroup.add('statictext{text: "Subdivisions number:"}');
+            var GSubdivisionsNumberField = GSubdivisionsNumberGroup.add('edittext', undefined, GSubdivisionsNumberDefaultValue);
+            GSubdivisionsNumberField.characters = 5;
+            GSubdivisionsNumberField.enabled = false;
+                var GSubdivisionsNumberCheckbox = GSubdivisionsNumberGroup.add('checkbox', undefined, 'set a custom value');
+                    GSubdivisionsNumberCheckbox.onClick = function() {
+                        GSubdivisionsNumberField.enabled = GSubdivisionsNumberCheckbox.value;
+                        if(GSubdivisionsNumberCheckbox.value == false){
+                            GSubdivisionsNumberField.text = GSubdivisionsNumberDefaultValue;
+                        }
+                    };     
 
 
 
 
-    //3 - I kissed a square and I liked it
+    //3 - i kissed a square and i liked it
     myPalette.tabs[2]= myPalette.tabGroup.add('group');
     myPalette.tabs[2].add('statictext{text: "I Kissed A Square And I Liked It"}')
     myPalette.tabs[2].add('panel');
 
-        // Full - Empty Area Ratio
+        // full - empty area ratio
         var IKASAILIAreasRatioGroup = myPalette.tabs[2].add('group');
         IKASAILIAreasRatioGroup.orientation = 'row';
         var IKASAILIAreasRatioDefaultValue = areasRatio.toFixed(2);
@@ -107,14 +122,14 @@ function gridWizardPalette() {
                         }
                     };
         
-        // Short side subdivisions
+        // short side subdivisions
         var IKASAILIShortSideSubdivisionsGroup = myPalette.tabs[2].add('group');
         IKASAILIShortSideSubdivisionsGroup.orientation = 'row';
             IKASAILIShortSideSubdivisionsGroup.add('statictext{text: "Short side subdivisions:"}');
             var IKASAILIMyShortSideSubdivisionsField = IKASAILIShortSideSubdivisionsGroup.add('edittext', undefined, '3');
             IKASAILIMyShortSideSubdivisionsField.characters = 5;
 
-        // Gutter
+        // gutter
         var IKASAILIGutterGroup = myPalette.tabs[2].add('group');
         IKASAILIGutterGroup.orientation = 'row';
             IKASAILIGutterGroup.add('statictext{text: "Gutter:"}');
@@ -163,7 +178,9 @@ function gridWizardPalette() {
         }
         
         else if(myPalette.subTabs.selection == 1){
+            var GMySubdivisionsNumber = parseFloat(GSubdivisionsNumberField.text);
             var GMyFlippingPreferences = [];
+
             if (GFlipHorizontallyCheckBox.value == true) {
                 GMyFlippingPreferences.push('horizontallyFlipped');
             } else if (GFlipHorizontallyCheckBox.value == false) {
@@ -175,7 +192,7 @@ function gridWizardPalette() {
                 GMyFlippingPreferences.push('verticallyStandard');
             }
 
-            gutenbergify(GMyFlippingPreferences);
+            gutenbergify(GMyFlippingPreferences, GMySubdivisionsNumber);
         } 
 
         else if(myPalette.subTabs.selection == 2){
@@ -193,9 +210,9 @@ function gridWizardPalette() {
 
 
 
-// Metodi
+// methods
 function everythingEverywhereAllAtPageRatio(areasRatio, columns) {
-    // Calculate the total width of vertical margins and the total height of horizontal margins
+    // calculate the total width of vertical margins and the total height of horizontal margins
     // by picking a custom percentage of the page width and height (default: same ratio of the page short to long side)
     var marginWidth = pageWidth * areasRatio;
     var marginHeight = pageHeight * areasRatio;
@@ -206,15 +223,15 @@ function everythingEverywhereAllAtPageRatio(areasRatio, columns) {
     marginRight = marginWidth / 2;
 
 
-    // Calculate a draft for the columns width
+    // calculate a draft for the columns width
     var columnsWidth = (pageWidth - marginWidth) / columns;
-    // Calculate the gutters width as a portion of the draft columns width
+    // calculate the gutters width as a portion of the draft columns width
     // with the same ratio with the column width as the total margins width and height to the page width and height
     var guttersWidth = (pageWidth * areasRatio) / (2 * columns);
-    // Adjust the columns width to suit the gutters width
+    // adjust the columns width to suit the gutters width
     columnsWidth = (pageWidth - marginWidth - guttersWidth * (columns - 1)) / columns;
 
-    // Calculate a the rows height so that the module of the grid has the same proportions of the page and the rectangle defined by the margins
+    // calculate a the rows height so that the module of the grid has the same proportions of the page and the rectangle defined by the margins
     // columnsWidth : (pageWidth - marginsWidth) = x : (pageHeight - marginsHeight) -> x = columnsWidth * (pageHeight - marginsHeight) / (pageWidth - marginsWidth)
     var rowsHeight = columnsWidth * (pageHeight - marginHeight) / (pageWidth - marginWidth);
     // Calculate the gutters height as a portion of the draft columns height
@@ -222,7 +239,7 @@ function everythingEverywhereAllAtPageRatio(areasRatio, columns) {
     var guttersHeight = (pageHeight * areasRatio) / (2 * columns)
 
 
-    // Set a loop to draw the vertical guides
+    // set a loop to draw the vertical guides
     for (var i = 0; i < columns; i++) {
         var xPosition = marginLeft + i * (columnsWidth + guttersWidth);
 
@@ -232,7 +249,7 @@ function everythingEverywhereAllAtPageRatio(areasRatio, columns) {
         master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: pageWidth + xPosition });
         master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: pageWidth + xPosition + columnsWidth });
     }
-    // Set a loop to draw the horizontal guides
+    // set a loop to draw the horizontal guides
     for (var j = 0; j < columns; j++) {
         var yPosition = marginTop + j * (rowsHeight + guttersHeight);
 
@@ -244,7 +261,7 @@ function everythingEverywhereAllAtPageRatio(areasRatio, columns) {
     }
     
     
-    // Apply the margin values
+    // apply the margin values
     master_spread_left.marginPreferences.properties = {
         right: marginRight,
         top: marginTop,
@@ -257,21 +274,13 @@ function everythingEverywhereAllAtPageRatio(areasRatio, columns) {
         left: marginLeft,
         bottom: marginBottom,
     };
-
-    doc.pages.item(0).appliedMaster = doc.masterSpreads.item(0);
 }
 
-function gutenbergify(flippingPreferences) {
+function gutenbergify(flippingPreferences, subdivisionsNumber) {
+    // set a custom number of modules to subdivide the square defined by the margins in vertically and horizontally (default: 6)
     var moduleHeight = pageHeight / 9;
 
-    //equazione della retta marginTop -> y = moduleHeight * ph
-
-    //equazione della diagonale della pagina -> y = ph/pw * x
-    //punto di intersezione -> moduleHeight * ph = ph/pw * x -> x = (moduleHeight * ph * pw) / ph = moduleHeight * pw = 1 / 9 *pw
-
-    //equazione della diagonale della doppia pagina -> y = (ph / (2 * pw)) * x
-    //punto di intersezione -> moduleHeight * ph = (ph / (2 * pw)) * x -> x = moduleHeight * 2 * pw -> 2 / 9 * pw
-
+    // get the user's flipping preferences and set the margins accordingly
     if (flippingPreferences[0] == 'horizontallyStandard') {
         marginRight = pageWidth / 9;
         marginLeft = (pageWidth / 9) * 2;
@@ -289,44 +298,53 @@ function gutenbergify(flippingPreferences) {
     }
 
 
+    // marginTop equation -> y = moduleHeight * ph
+
+    // Page's diagonal equation -> y = ph/pw * x
+    // intersection point with marginTop -> moduleHeight * ph = ph/pw * x -> x = (moduleHeight * ph * pw) / ph = moduleHeight * pw = 1 / 9 *pw
+
+    // facing pages' diagonal equation -> y = (ph / (2 * pw)) * x
+    // intersection point with marginTop -> moduleHeight * ph = (ph / (2 * pw)) * x -> x = moduleHeight * 2 * pw -> 2 / 9 * pw
+
+    var rowsHeight = (pageHeight - marginTop - marginBottom) / subdivisionsNumber;
+    var columnsWidth = (pageWidth - marginLeft - marginRight) / subdivisionsNumber;
+
+    var guttersHeight = rowsHeight / 9;
+    var guttersWidth = columnsWidth / 9;
+
+    rowsHeight = (pageHeight - marginTop - marginBottom - guttersHeight * (subdivisionsNumber - 1)) / subdivisionsNumber;
+    columnsWidth = (pageWidth - marginLeft - marginRight - guttersWidth * (subdivisionsNumber - 1)) / subdivisionsNumber;
 
 
+    // set a loop to draw the vertical guides on the left page
+    for (var i = 0; i < subdivisionsNumber; i++) {
+        var xPosition = marginLeft + i * (columnsWidth + guttersWidth);
 
-    var rowsHeight = (pageHeight - marginTop - marginBottom) / 6;
-    var columnsWidth = (pageWidth - marginLeft - marginRight) / 6;
-
-    var gutterHeight = rowsHeight / 9;
-    var gutterWidth = columnsWidth / 9;
-
-    for (var i = marginLeft + columnsWidth; i < pageWidth - marginRight - 1; i += columnsWidth) {
-        with (master_spread_left) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (i - gutterWidth) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (i + gutterWidth) });
-        }
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: xPosition });
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: xPosition + columnsWidth });
     }
 
-    for (var j = pageWidth + marginRight + columnsWidth; j < pageWidth * 2 - marginLeft - 1; j += columnsWidth) {
-        with (master_spread_right) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (j - gutterWidth) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: (j + gutterWidth) });
-        }
+    // set a loop to draw the vertical guides on the right page
+    for (var j = 0; j < subdivisionsNumber; j++) {
+        var xPosition = marginRight + j * (columnsWidth + guttersWidth);
+
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: pageWidth + xPosition });
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.vertical, location: pageWidth + xPosition + columnsWidth });
     }
 
-    for (var k = marginTop + rowsHeight; k < pageHeight - marginBottom - 1; k += rowsHeight) {
-        with (master_spread_left) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (k - gutterHeight) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (k + gutterHeight) });
-        }
-        with (master_spread_right) {
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (k - gutterHeight) });
-            guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: (k + gutterHeight) });
-        }
+    // set a loop to draw the horizontal guides
+    for (var k = 0; k < subdivisionsNumber; k++) {
+        var yPosition = marginTop + k * (rowsHeight + guttersHeight);
+
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition });
+        master_spread_left.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition + rowsHeight });
+
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition });
+        master_spread_right.guides.add(undefined, { orientation: HorizontalOrVertical.horizontal, location: yPosition + rowsHeight });
     }
 
 
-
-
-
+    // apply the margin values
     master_spread_left.marginPreferences.properties = {
         right: marginLeft,
         top: marginTop,
@@ -419,7 +437,7 @@ function IKissedASquareAndILikedIt(areasRatio, shortSideSubdivisions, gutter) {
 
 
 
-// Utilities
+// utilities
 function clearAllGuides(){
   var numGuides = doc.guides.length;
   if (numGuides == 0) return;
