@@ -42,17 +42,27 @@ function gridWizardPalette() {
     myPalette.tabs[0]= myPalette.tabGroup.add('group');
     myPalette.tabs[0].add('statictext{text: "Grid Wizard"}');
     var gridWizardDescriptionGroup = myPalette.tabs[0].add('group {alignChildren: ["left", "center"], orientation: "column", spacing: "0"}');
-        gridWizardDescriptionGroup.add('statictext{text: "This script serves as a tool for creating and managing grid systems within Adobe InDesign."}');
+        gridWizardDescriptionGroup.add('statictext{text: "GridWizard is an open-source tool created to generate and manage grid systems within Adobe InDesign."}');
         gridWizardDescriptionGroup.add('statictext{text: ""}');
-        gridWizardDescriptionGroup.add('statictext{text: "In the current tab it is possible to select a target Parent Spread."}');
-        gridWizardDescriptionGroup.add('statictext{text: "You can then choose a method to use by navigating through the panels."}');
-        gridWizardDescriptionGroup.add('statictext{text: "When you are done inputting your custom values, just press ok and let the magic happen."}');
+        gridWizardDescriptionGroup.add('statictext{text: "Within this tab, select the target parent spread from those available in the active document."}');
+        gridWizardDescriptionGroup.add('statictext{text: "Then simply choose a generation method by navigating through the tabs, fill in the customizable fields, press ok, and let the magic happen."}');
+        gridWizardDescriptionGroup.add('statictext{text: ""}');
+
+    // link to the repository
+    var repositoryLinkGroup =  myPalette.tabs[0].add('group');
+    repositoryLinkGroup.orientation = 'row';
+        repositoryLinkGroup.add('statictext {text: "For further information or to see the full documentation, check the repository on"}')
+        var repositoryLinkButton = repositoryLinkGroup.add('button', undefined, "github");
+        repositoryLinkButton.onClick = function(){
+            GotoLink('https://github.com/Caroljpeg/gridWizard');
+        }
+
     myPalette.tabs[0].add('panel');
 
         // target master
         var targetMasterGroup = myPalette.tabs[0].add('group');
         targetMasterGroup.orientation = 'row';
-            targetMasterGroup.add('statictext{text: "target parent spread:"}');
+            targetMasterGroup.add('statictext{text: "Target parent spread:"}');
                 var masterSpreadsArray = [];
                 var masterSpreads = doc.masterSpreads;
                 for (var i = 0; i < masterSpreads.length; i++){
@@ -70,18 +80,16 @@ function gridWizardPalette() {
     myPalette.tabs[1]= myPalette.tabGroup.add('group');
     myPalette.tabs[1].add('statictext{text: "Everything Everywhere All At Page Ratio"}');
     var EEAAPRDescriptionGroup = myPalette.tabs[1].add('group {alignChildren: ["left", "center"], orientation: "column", spacing: "0"}');
-        EEAAPRDescriptionGroup.add('statictext{text:"This function generates a grid system where everything - from the rectangle defined"}');
-        EEAAPRDescriptionGroup.add('statictext{text:"by the margins to the modules into which it is divided - mirrors the page aspect ratio."}');
-        EEAAPRDescriptionGroup.add('statictext{text:"It is possible to specify the number of columns and adjust the full-empty areas ratio."}');
+        EEAAPRDescriptionGroup.add('statictext{text:"Everything Everywhere All At Page Ratio generates a layout grid wherein everything is related to the aspect ratio of the page."}');
         EEAAPRDescriptionGroup.add('statictext{text:""}');
-        EEAAPRDescriptionGroup.add('statictext{text:"Note: the default value of the full-empty areas ratio is the same of the page aspect ratio."}');
+        EEAAPRDescriptionGroup.add('statictext{text:"Note[1]: the default value for the Full - Empty areas ratio is the same as the page aspect ratio."}');
     myPalette.tabs[1].add('panel');
 
-        // full - empty area ratio
+        // full - empty areas ratio
         var EEAAPRAreasRatioGroup = myPalette.tabs[1].add('group');
         EEAAPRAreasRatioGroup.orientation = 'row';
         var EEAAPRAreasRatioDefaultValue = areasRatio.toFixed(2);
-            EEAAPRAreasRatioGroup.add('statictext{text: "Full - Empty Area Ratio:"}');
+            EEAAPRAreasRatioGroup.add('statictext{text: "Full - Empty areas ratio:"}');
             var EEAAPRMyAreasRatioField = EEAAPRAreasRatioGroup.add('edittext', undefined, EEAAPRAreasRatioDefaultValue);
             EEAAPRMyAreasRatioField.characters = 5;
             EEAAPRMyAreasRatioField.enabled = false;
@@ -93,12 +101,12 @@ function gridWizardPalette() {
                         }
                     };
                     
-        // columns number
-        var EEAAPRColumnsGroup = myPalette.tabs[1].add('group');
-        EEAAPRColumnsGroup.orientation = 'row';
-            EEAAPRColumnsGroup.add('statictext{text: "Number of columns:"}');
-            var EEAAPRMyColumnsField = EEAAPRColumnsGroup.add('edittext', undefined, '3');
-            EEAAPRMyColumnsField.characters = 5;
+        // subdivisions number
+        var EEAAPRSubdivisionsNumberGroup = myPalette.tabs[1].add('group');
+        EEAAPRSubdivisionsNumberGroup.orientation = 'row';
+            EEAAPRSubdivisionsNumberGroup.add('statictext{text: "Subdivisions number:"}');
+            var EEAAPRMySubdivisionsNumberField = EEAAPRSubdivisionsNumberGroup.add('edittext', undefined, '3');
+            EEAAPRMySubdivisionsNumberField.characters = 5;
 
 
 
@@ -108,20 +116,17 @@ function gridWizardPalette() {
     myPalette.tabs[2]= myPalette.tabGroup.add('group');
     myPalette.tabs[2].add('statictext{text: "I Kissed A Square And I Liked It"}');
     var IKASAILIDescriptionGroup = myPalette.tabs[2].add('group {alignChildren: ["left", "center"], orientation: "column", spacing: "0"}');
-        IKASAILIDescriptionGroup.add('statictext{text:"This function creates a square-based grid system."}');
-        IKASAILIDescriptionGroup.add('statictext{text:"It is possible to set the number of subdivisions along the short side of the page:"}');
-        IKASAILIDescriptionGroup.add('statictext{text:"the subdivisions for the long side are automatically calculated accordingly."}');
-        IKASAILIDescriptionGroup.add('statictext{text:"It is also possible to specify the gutter size, for precise control over the grid spacing,"}');
-        IKASAILIDescriptionGroup.add('statictext{text:"as well as the full-empty areas ratio."}');
+        IKASAILIDescriptionGroup.add('statictext{text:"I Kissed A Square And I Liked It generates a square-based layout system."}');
         IKASAILIDescriptionGroup.add('statictext{text:""}');
-        IKASAILIDescriptionGroup.add('statictext{text:"Note: the default value of the full-empty areas ratio is the same of the page aspect ratio."}');
+        IKASAILIDescriptionGroup.add('statictext{text:"Note[1]: the default value for the Full - Empty areas ratio is the same as the page aspect ratio."}');
+        IKASAILIDescriptionGroup.add('statictext{text:"Note[2]: the gutter measurement unit is the same of the active document."}');
     myPalette.tabs[2].add('panel');
 
-        // full - empty area ratio
+        // full - empty areas ratio
         var IKASAILIAreasRatioGroup = myPalette.tabs[2].add('group');
         IKASAILIAreasRatioGroup.orientation = 'row';
         var IKASAILIAreasRatioDefaultValue = areasRatio.toFixed(2);
-            IKASAILIAreasRatioGroup.add('statictext{text: "Full - Empty Area Ratio:"}');
+            IKASAILIAreasRatioGroup.add('statictext{text: "Full - Empty areas ratio:"}');
             var IKASAILIMyAreasRatioField = IKASAILIAreasRatioGroup.add('edittext', undefined, IKASAILIAreasRatioDefaultValue);
             IKASAILIMyAreasRatioField.characters = 5;
             IKASAILIMyAreasRatioField.enabled = false;
@@ -155,16 +160,10 @@ function gridWizardPalette() {
     myPalette.tabs[3]= myPalette.tabGroup.add('group');
     myPalette.tabs[3].add('statictext{text: "Gutenbergify"}');
     var GDescriptionGroup = myPalette.tabs[3].add('group {alignChildren: ["left", "center"], orientation: "column", spacing: "0"}');
-        GDescriptionGroup.add('statictext{text:"This function recreates parametrically the grid used by Gutenberg in his 42-lines bible."}');
-        GDescriptionGroup.add('statictext{text:"It is possible to specify the number of subdivisions and choose to flip the grid"}');
-        GDescriptionGroup.add('statictext{text:"horizontally or vertically, allowing for a wider variety of layout systems."}');
+        GDescriptionGroup.add('statictext{text:"Gutenbergify parametrically recreates the layout grid developed by Gutenberg for his 42-line bible."}');
+        GDescriptionGroup.add('statictext{text:""}');
+        GDescriptionGroup.add('statictext{text:"Note[1]: the default value for the Subdivisions number is the one used by Gutenberg."}');
     myPalette.tabs[3].add('panel');
-
-        // flipping preferences
-        var GFlippingPreferencesGroup = myPalette.tabs[3].add('group');
-        GFlippingPreferencesGroup.orientation = 'row';
-            var GFlipHorizontallyCheckBox = GFlippingPreferencesGroup.add('checkbox', undefined, 'flip horizontally');
-            var GFlipVerticallyCheckBox = GFlippingPreferencesGroup.add('checkbox', undefined, 'flip vertically');
 
         // subdivisions number
         var GSubdivisionsNumberGroup = myPalette.tabs[3].add('group');
@@ -181,6 +180,12 @@ function gridWizardPalette() {
                             GSubdivisionsNumberField.text = GSubdivisionsNumberDefaultValue;
                         }
                     };
+
+        // flipping preferences
+        var GFlippingPreferencesGroup = myPalette.tabs[3].add('group');
+        GFlippingPreferencesGroup.orientation = 'row';
+            var GFlipHorizontallyCheckBox = GFlippingPreferencesGroup.add('checkbox', undefined, 'flip horizontally');
+            var GFlipVerticallyCheckBox = GFlippingPreferencesGroup.add('checkbox', undefined, 'flip vertically');
     
 
 
@@ -190,12 +195,10 @@ function gridWizardPalette() {
     myPalette.tabs[4]= myPalette.tabGroup.add('group');
     myPalette.tabs[4].add('statictext{text: "Fibonacci Dreams"}');
     var FDDescriptionGroup = myPalette.tabs[4].add('group {alignChildren: ["left", "center"], orientation: "column", spacing: "0"}');
-        FDDescriptionGroup.add('statictext{text:"This function uses Fibonacci sequence numbers to create aesthetically pleasing grid systems."}');
-        FDDescriptionGroup.add('statictext{text:"It is possible to select the columns and rows number from the first 6 elements in the sequence,"}');
-        FDDescriptionGroup.add('statictext{text:"and choose to flip the grid horizontally or vertically."}');
+        FDDescriptionGroup.add('statictext{text:"Fibonacci Dreams uses the Fibonacci sequence, starting with a procedurally defined module, to create a mathematically harmonious layout grid."}');
         FDDescriptionGroup.add('statictext{text:""}');
-        FDDescriptionGroup.add('statictext{text:"Note: The module used to build the grid is based on the page width: the page height"}');
-        FDDescriptionGroup.add('statictext{text:"will be calculated consequentially and varies depending on the number of rows selected."}');
+        FDDescriptionGroup.add('statictext{text:"Note[1]: for the Columns / Rows number it is possible to pick values from the first six elements of the Fibonacci sequence."}');
+        FDDescriptionGroup.add('statictext{text:"Note[2]: The page height will be calculated independently from the active document and varies depending on the number of rows selected."}');
     myPalette.tabs[4].add('panel');
 
         // columns & rows number
@@ -224,14 +227,14 @@ function gridWizardPalette() {
     myPalette.tabs[5]= myPalette.tabGroup.add('group');
     myPalette.tabs[5].add('statictext{text: "Pure Chaos"}');
     var PCDescriptionGroup = myPalette.tabs[5].add('group {alignChildren: ["left", "center"], orientation: "column", spacing: "0"}');
-        PCDescriptionGroup.add('statictext{text:"Just some pseudo-random chaos"}');
+        PCDescriptionGroup.add('statictext{text:"Just some pseudo-random chaos."}');
     myPalette.tabs[5].add('panel');
 
-        // full - empty area ratio
+        // full - empty areas ratio
         var PCAreasRatioGroup = myPalette.tabs[5].add('group');
         PCAreasRatioGroup.orientation = 'row';
         var PCAreasRatioDefaultValue = areasRatio.toFixed(2);
-            PCAreasRatioGroup.add('statictext{text: "Full - Empty Area Ratio:"}');
+            PCAreasRatioGroup.add('statictext{text: "Full - Empty areas ratio:"}');
             var PCMyAreasRatioField = PCAreasRatioGroup.add('edittext', undefined, PCAreasRatioDefaultValue);
             PCMyAreasRatioField.characters = 5;
             PCMyAreasRatioField.enabled = false;
@@ -335,9 +338,9 @@ function gridWizardPalette() {
 
             else if(myPalette.subTabs.selection == 1){
                 var EEAAPRMyAreasRatio = parseFloat(EEAAPRMyAreasRatioField.text);
-                var EEAAPRMyColumns = parseFloat(EEAAPRMyColumnsField.text);
+                var EEAAPRMySubdivisionsNumber = parseFloat(EEAAPRMySubdivisionsNumberField.text);
 
-                everythingEverywhereAllAtPageRatio(EEAAPRMyAreasRatio, EEAAPRMyColumns);
+                everythingEverywhereAllAtPageRatio(EEAAPRMyAreasRatio, EEAAPRMySubdivisionsNumber);
             }
 
             else if(myPalette.subTabs.selection == 2){
@@ -884,4 +887,24 @@ function genRand (min, max, decimalPlaces) {
     var power = Math.pow(10, decimalPlaces);
     var result = Math.floor(result * power) / power;
     return result;
+}
+
+function GotoLink(url){
+    if(app.version>6){
+        if(File.fs=="Macintosh"){
+            var body = 'tell application "Finder"\ropen location "'+url+'"\rend tell';
+            app.doScript(body,ScriptLanguage.APPLESCRIPT_LANGUAGE);
+        } else {
+            var body =  'dim objShell\rset objShell = CreateObject("Shell.Application")\rstr = "'+url+'"\robjShell.ShellExecute str, "", "", "open", 1 '
+            app.doScript(body,ScriptLanguage.VISUAL_BASIC);
+        }
+    }
+    else {
+        linkJumper = File(Folder.temp.absoluteURI+"/link.html");
+        linkJumper.open("w");
+        var linkBody = '<html><head><META HTTP-EQUIV=Refresh CONTENT="0; URL='+url+'"></head><body> <p></body></html>'
+        linkJumper.write(linkBody);
+        linkJumper.close();
+        linkJumper.execute();
+    }
 }
