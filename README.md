@@ -3,9 +3,17 @@
 GridWizard is an open-source tool developed by [caroljpeg](https://www.instagram.com/carol.jpegg/) to generate and manage grid systems within Adobe InDesign.  
 if you have any question / request / consideration / report or if you want to share what you made with it, feel free to reach me at a.martinelli0601@gmail.com
 
-## introduction
-within the initial tab (GridWizard), select the target parent spread from those available in the active document.
-then simply choose a generation method by navigating through the tabs, fill in the customizable fields, press ok, and let the magic happen.
+## script setup
+1. clone this repository / download the gridWizard1.0.jsx (facingPages and/or singlePage) files from the main directory.
+2. save the jsx files in the InDesign scripts folder:  
+    on macos  
+    `/Users/<username>/Library/Preferences/Adobe InDesign/Version x.x/<locale>/Scripts`  
+    on windows  
+    `C:\Users\<username>\AppData\Roaming\Adobe\InDesign\Version x.x\<locale>\Scripts`
+3. open InDesign and access the scripts panel (if you don't see it go to Windows > Utilities > Scripts) and navigate to the "user" folder.
+4. doubleclick on gridWizard1.0.jsx (reference gridWizard1.0_facingPagesjsx for facing pages documents and gridWizard1.0_singlePage.jsx for single page documents).
+5. within the initial tab (GridWizard), select the target parent spread from those available in the active document.
+6. choose a generation method by navigating through the tabs, fill in the customizable fields, press ok, and let the magic happen.
 
 ## methods
 ### 1 - Everything Everywhere All At Page Ratio
@@ -44,12 +52,3 @@ Just some pseudo-random chaos.
   - **Columns / Rows number**: defines the number of rows and columns occupying the rectangle defined by the margins.
   - **Gutter min / max width / height**: defines the minimum and maximum values for the width and height of the gutters.
   - **Facing pages handling**: defines the treatment of facing pages.
-
-## execution
-save the gridWizardx.x.js file in the InDesign scripts folder:  
-on macos  
-`/Users/<username>/Library/Preferences/Adobe InDesign/Version x.x/<locale>/Scripts`  
-on windows  
-`C:\Users\<username>\AppData\Roaming\Adobe\InDesign\Version x.x\<locale>\Scripts`  
-
-now open indesign, go to the scripts panel and simply doubleclick on gridWizardx.x.js
