@@ -1,7 +1,9 @@
 ![gridWizardPalette[0]_gridWizard](https://github.com/Caroljpeg/gridWizard/blob/main/Media/gridWizardPalette%5B0%5D_gridWizard.png)
 # gridWizard
-GridWizard is an open-source tool developed by [caroljpeg](https://www.instagram.com/carol.jpegg/) to generate and manage grid systems within Adobe InDesign.  
-if you have any question / request / consideration / report or if you want to share what you made with it, feel free to reach me at a.martinelli0601@gmail.com
+gridWizard is a tool developed by [caroljpeg](https://www.instagram.com/carol.jpegg/) to generate and manage grid systems within Adobe InDesign.  
+if you have any question / request / consideration / report or if you want to share what you made with it, feel free to reach me at a.martinelli0601@gmail.com  
+  
+gridWizard is available as a free and open-source release under MIT License. if you found it useful / it saved you some time / pain, consider to support my work buying gridWizard for what you wish / can [on gumroad](https://caroljpeg.gumroad.com/l/oymvh).
 
 ## script setup
 1. clone this repository / download the latest release [here](https://github.com/Caroljpeg/gridWizard/releases/tag/v1.0).
