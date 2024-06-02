@@ -4,8 +4,8 @@ GridWizard is an open-source tool developed by [caroljpeg](https://www.instagram
 if you have any question / request / consideration / report or if you want to share what you made with it, feel free to reach me at a.martinelli0601@gmail.com
 
 ## script setup
-1. clone this repository / download the gridWizard1.0.jsx (facingPages and/or singlePage) files from the main directory.
-2. save the jsx files in the InDesign scripts folder:  
+1. clone this repository / download the latest release [here](https://github.com/Caroljpeg/gridWizard/releases/tag/v1.0).
+2. move the gridWizard1.0.jsx (facingPages and/or singlePage) files in the InDesign scripts folder:  
     on macos  
     `/Users/<username>/Library/Preferences/Adobe InDesign/Version x.x/<locale>/Scripts`  
     on windows  
